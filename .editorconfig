@@ -1,0 +1,4 @@
+# Visual Studio で、C++ の設定で .editorconfig ファイルが生成されました。
+
+[*.{c++,cc,cpp,cxx,h,h++,hh,hpp,hxx,inl,ipp,tlh,tli}]
+vc_generate_documentation_comments = xml
