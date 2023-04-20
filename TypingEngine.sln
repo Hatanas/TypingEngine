@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TypingEngine", "TypingEngine\TypingEngine.vcxproj", "{10D03228-54B5-412A-B0F1-13BB53DBE5FF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目", "ソリューション項目", "{4C5704AB-E58B-4012-95DF-78DDCDE63A7E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
@@ -12,6 +10,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp", "TestApp\TestApp.vcxproj", "{7D632549-FC4A-47E1-8495-912AB53AD3FA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A9493AAD-A72B-4972-9140-5D168F1CC915} = {A9493AAD-A72B-4972-9140-5D168F1CC915}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TypingEngine", "TypingEngine\TypingEngine.vcxproj", "{A9493AAD-A72B-4972-9140-5D168F1CC915}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +26,22 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Debug|x64.ActiveCfg = Debug|x64
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Debug|x64.Build.0 = Debug|x64
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Debug|x86.ActiveCfg = Debug|Win32
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Debug|x86.Build.0 = Debug|Win32
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Release|x64.ActiveCfg = Release|x64
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Release|x64.Build.0 = Release|x64
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Release|x86.ActiveCfg = Release|Win32
-		{10D03228-54B5-412A-B0F1-13BB53DBE5FF}.Release|x86.Build.0 = Release|Win32
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Debug|x64.ActiveCfg = Debug|x64
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Debug|x64.Build.0 = Debug|x64
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Debug|x86.ActiveCfg = Debug|x64
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Debug|x86.Build.0 = Debug|x64
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Release|x64.ActiveCfg = Release|x64
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Release|x64.Build.0 = Release|x64
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Release|x86.ActiveCfg = Release|x64
+		{7D632549-FC4A-47E1-8495-912AB53AD3FA}.Release|x86.Build.0 = Release|x64
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Debug|x64.ActiveCfg = Debug|x64
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Debug|x64.Build.0 = Debug|x64
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Debug|x86.ActiveCfg = Debug|Win32
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Debug|x86.Build.0 = Debug|Win32
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Release|x64.ActiveCfg = Release|x64
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Release|x64.Build.0 = Release|x64
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Release|x86.ActiveCfg = Release|Win32
+		{A9493AAD-A72B-4972-9140-5D168F1CC915}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

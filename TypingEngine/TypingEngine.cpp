@@ -1,20 +1,47 @@
-﻿// TypingEngine.cpp : このファイルには 'main' 関数が含まれています。プログラム実行の開始と終了がそこで行われます。
-//
+#include <memory>
 
-#include <iostream>
+#include "TypingEngine.h"
+#include "KanaAutomaton.h"
+#include "AutomatonCreator.h"
+#include "Node.h"
+#include "Edge.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
+namespace TypingEngine {
+
+using namespace std;
+
+TypingEngine TypingEngine::create(const u32string& word) {
+    KanaAutomaton automaton = AutomatonCreator::create(word);
+    return TypingEngine(automaton, U"");
 }
 
-// プログラムの実行: Ctrl + F5 または [デバッグ] > [デバッグなしで開始] メニュー
-// プログラムのデバッグ: F5 または [デバッグ] > [デバッグの開始] メニュー
+optional<TypingEngine> TypingEngine::type(char32_t typingChar) const {
+    auto transit = m_automaton.transitByTyping(typingChar);
+    if (!transit.second) { return nullopt; }
+    return TypingEngine(transit.first, m_accumulatedInputChar + typingChar);
+}
 
-// 作業を開始するためのヒント: 
-//    1. ソリューション エクスプローラー ウィンドウを使用してファイルを追加/管理します 
-//   2. チーム エクスプローラー ウィンドウを使用してソース管理に接続します
-//   3. 出力ウィンドウを使用して、ビルド出力とその他のメッセージを表示します
-//   4. エラー一覧ウィンドウを使用してエラーを表示します
-//   5. [プロジェクト] > [新しい項目の追加] と移動して新しいコード ファイルを作成するか、[プロジェクト] > [既存の項目の追加] と移動して既存のコード ファイルをプロジェクトに追加します
-//   6. 後ほどこのプロジェクトを再び開く場合、[ファイル] > [開く] > [プロジェクト] と移動して .sln ファイルを選択します
+u32string TypingEngine::romanized() const {
+    return generateRomanizedString(m_automaton.getBegin());
+}
+
+u32string TypingEngine::romanizedRemining() const {
+    return generateRomanizedString(m_automaton.getNow());
+}
+
+bool TypingEngine::isFinished() const {
+    return m_automaton.getNow() == m_automaton.getEnd();
+}
+
+u32string TypingEngine::generateRomanizedString(std::shared_ptr<Node> start) const {
+    KanaAutomaton automaton(m_automaton.getBegin(), start, m_automaton.getEnds());
+    u32string roman = U"";
+    while (true) {
+        auto [a, c] = automaton.transitByPriority();
+        if (c == '\0') { break; }
+        roman += c;
+        automaton = a;
+    }
+    return roman;
+}
+}
