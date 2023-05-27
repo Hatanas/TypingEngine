@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp", "TestApp\TestApp.vcxproj", "{7D632549-FC4A-47E1-8495-912AB53AD3FA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleApp", "ExampleApp\ExampleApp.vcxproj", "{7D632549-FC4A-47E1-8495-912AB53AD3FA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A9493AAD-A72B-4972-9140-5D168F1CC915} = {A9493AAD-A72B-4972-9140-5D168F1CC915}
 	EndProjectSection
