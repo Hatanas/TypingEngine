@@ -41,7 +41,7 @@ KanaAutomaton KanaAutomaton::connect(const KanaAutomaton& first, const KanaAutom
 }
 
 KanaAutomaton KanaAutomaton::empty() {
-    auto node = make_shared<Node>(vector<Edge>());
+    auto node = make_shared<Node>(vector<Edge<Node>>());
     return KanaAutomaton(node, node);
 }
 }
