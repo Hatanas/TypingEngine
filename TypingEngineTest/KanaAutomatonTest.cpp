@@ -89,4 +89,36 @@ TEST(KanaAutomatonTest, TransitByTyping) {
         automaton.transitByTyping(U'a'),
         Pair(IsEqualKanaAutomaton(automaton), Eq(false)));
 }
+
+TEST(KanaAutomatonTest, TransitByPriority) {
+    auto end = make_shared<Node>(vector<Edge<Node>>());
+    auto a = make_shared<Node>(vector<Edge<Node>>({Edge<Node>(U'c', true, end)}));
+    auto b = make_shared<Node>(vector<Edge<Node>>({Edge<Node>(U'd', true, end)}));
+    auto begin = make_shared<Node>(vector<Edge<Node>>({
+        Edge<Node>(U'a', false, a),
+        Edge<Node>(U'b', true, b)}));
+    KanaAutomaton automaton(begin, end);
+    EXPECT_THAT(
+        automaton.transitByPriority(),
+        Pair(IsEqualKanaAutomaton(KanaAutomaton(begin, b, {end})), Eq(U'b')));
+}
+
+TEST(KanaAutomatonTest, Connect) {
+    auto end1 = make_shared<Node>(vector<Edge<Node>>());
+    auto n1 = make_shared<Node>(vector<Edge<Node>>({Edge(U'n', true, end1)}));
+    auto begin1 = make_shared<Node>(vector<Edge<Node>>({Edge(U'n', true, n1)}));
+    KanaAutomaton a1(begin1, begin1, {end1, n1});
+    auto end2 = make_shared<Node>(vector<Edge<Node>>());
+    auto begin2 = make_shared<Node>(vector<Edge<Node>>({Edge(U'k', true, end2)}));
+    KanaAutomaton a2(begin2, begin2, {end2});
+    auto connect = KanaAutomaton::connect(a1, a2);
+    EXPECT_EQ(begin1, connect.getBegin());
+    EXPECT_EQ(end2, connect.getEnd());
+    EXPECT_THAT(
+        connect.transitByTyping(U'n').first.transitByTyping(U'n').first.transitByTyping(U'k'),
+        Pair(IsEqualKanaAutomaton(KanaAutomaton(begin1, end2, {end2})), Eq(true)));
+    EXPECT_THAT(
+        connect.transitByTyping(U'n').first.transitByTyping(U'k'),
+        Pair(IsEqualKanaAutomaton(KanaAutomaton(begin1, end2, {end2})), Eq(true)));
+}
 }

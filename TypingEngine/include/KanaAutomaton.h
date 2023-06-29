@@ -110,7 +110,7 @@ public:
     /// <summary>
     /// Edgeに設定された優先度による遷移
     /// </summary>
-    /// <returns>遷移後のオートマトンと遷移できたかのフラグ</returns>
+    /// <returns>遷移後のオートマトンと遷移する文字</returns>
     std::pair<KanaAutomaton, char32_t> transitByPriority() const;
 
 public:
