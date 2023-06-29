@@ -123,9 +123,9 @@ public:
     static KanaAutomaton connect(const KanaAutomaton& first, const KanaAutomaton& second);
 
     /// <summary>
-    /// オートマトンが空であるかを判定
+    /// 空のオートマトンを取得
     /// </summary>
-    /// <returns>空かどうか</returns>
+    /// <returns>空のオートマトン</returns>
     static KanaAutomaton empty();
 };
 }

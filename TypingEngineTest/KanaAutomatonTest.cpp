@@ -121,4 +121,9 @@ TEST(KanaAutomatonTest, Connect) {
         connect.transitByTyping(U'n').first.transitByTyping(U'k'),
         Pair(IsEqualKanaAutomaton(KanaAutomaton(begin1, end2, {end2})), Eq(true)));
 }
+
+TEST(KanaAutomatonTest, Empty) {
+    auto a = KanaAutomaton::empty();
+    EXPECT_TRUE(a.empty());
+}
 }
