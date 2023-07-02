@@ -112,7 +112,7 @@ std::pair<KanaAutomaton, std::u32string> AutomatonCreator::select(const std::u32
             return selectYouon(
                 word, u32string(U"ゃぃゅぇょ"),
                 {createNYA, createNYI, createNYU, createNYE, createNYO, createNI});
-        case U'ぬ': return make_pair(createNE(), word.substr(1));
+        case U'ぬ': return make_pair(createNU(), word.substr(1));
         case U'ね': return make_pair(createNE(), word.substr(1));
         case U'の': return make_pair(createNO(), word.substr(1));
         case U'は': return make_pair(createHA(), word.substr(1));
@@ -299,7 +299,7 @@ KanaAutomaton AutomatonCreator::createKO() {
     auto c = make_shared<Node>(vector<Edge<Node>>({Edge(U'o', true, end)}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'k', true, k),
-        Edge(U'k', false, c)}));
+        Edge(U'c', false, c)}));
     return KanaAutomaton(begin, end);
 }
 
@@ -310,7 +310,6 @@ KanaAutomaton AutomatonCreator::createSA() {
     return KanaAutomaton(begin, end);
 }
 
-// si, shi
 KanaAutomaton AutomatonCreator::createSI() {
     auto end = make_shared<Node>(vector<Edge<Node>>());
     auto c = make_shared<Node>(vector<Edge<Node>>({Edge(U'i', true, end)}));
@@ -355,7 +354,6 @@ KanaAutomaton AutomatonCreator::createTA() {
     return KanaAutomaton(begin, end);
 }
 
-// ti, chi
 KanaAutomaton AutomatonCreator::createTI() {
     auto end = make_shared<Node>(vector<Edge<Node>>());
     auto ch = make_shared<Node>(vector<Edge<Node>>({Edge(U'i', true, end)}));
@@ -367,7 +365,6 @@ KanaAutomaton AutomatonCreator::createTI() {
     return KanaAutomaton(begin, end);
 }
 
-// tu, tsu
 KanaAutomaton AutomatonCreator::createTU() {
     auto end = make_shared<Node>(vector<Edge<Node>>());
     auto ts = make_shared<Node>(vector<Edge<Node>>({Edge(U'u', true, end)}));
@@ -441,14 +438,13 @@ KanaAutomaton AutomatonCreator::createHI() {
     return KanaAutomaton(begin, end);
 }
 
-// hu, fu
 KanaAutomaton AutomatonCreator::createHU() {
     auto end = make_shared<Node>(vector<Edge<Node>>());
     auto f = make_shared<Node>(vector<Edge<Node>>({Edge(U'u', true, end)}));
     auto h = make_shared<Node>(vector<Edge<Node>>({Edge(U'u', true, end)}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'h', true, h),
-        Edge(U'h', false, f)}));
+        Edge(U'f', false, f)}));
     return KanaAutomaton(begin, end);
 }
 
@@ -613,7 +609,6 @@ KanaAutomaton AutomatonCreator::createZA() {
     return KanaAutomaton(begin, end);
 }
 
-// zi, ji
 KanaAutomaton AutomatonCreator::createZI() {
     auto end = make_shared<Node>(vector<Edge<Node>>());
     auto z = make_shared<Node>(vector<Edge<Node>>({Edge(U'i', true, end)}));
@@ -856,8 +851,12 @@ KanaAutomaton AutomatonCreator::createXTU() {
 
 KanaAutomaton AutomatonCreator::createWHA() {
     auto xa = createXA();
-    auto wh = make_shared<Node>(vector<Edge<Node>>({Edge(U'a', true, xa.getEnd())}));
-    auto w = make_shared<Node>(vector<Edge<Node>>({Edge(U'h', true, wh)}));
+    auto wh = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'a', true, xa.getEnd()),
+        Edge(U'u', false, xa.getBegin())}));
+    auto w = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'h', true, wh),
+        Edge(U'u', false, xa.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, w),
         Edge(U'u', false, xa.getBegin())}));
@@ -866,10 +865,13 @@ KanaAutomaton AutomatonCreator::createWHA() {
 
 KanaAutomaton AutomatonCreator::createWHI() {
     auto xi = createXI();
-    auto wh = make_shared<Node>(vector<Edge<Node>>({Edge(U'i', true, xi.getEnd())}));
+    auto wh = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'i', true, xi.getEnd()),
+        Edge(U'u', false, xi.getBegin())}));
     auto w = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'i', true, xi.getEnd()),
-        Edge(U'h', false, wh)}));
+        Edge(U'h', false, wh),
+        Edge(U'u', false, xi.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, w),
         Edge(U'u', false, xi.getBegin())}));
@@ -878,10 +880,13 @@ KanaAutomaton AutomatonCreator::createWHI() {
 
 KanaAutomaton AutomatonCreator::createWHE() {
     auto xe = createXE();
-    auto wh = make_shared<Node>(vector<Edge<Node>>({Edge(U'e', true, xe.getEnd())}));
+    auto wh = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'e', true, xe.getEnd()),
+        Edge(U'u', false, xe.getBegin())}));
     auto w = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'e', true, xe.getEnd()),
-        Edge(U'h', false, wh)}));
+        Edge(U'h', false, wh),
+        Edge(U'u', false, xe.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, w),
         Edge(U'u', false, xe.getBegin())}));
@@ -890,8 +895,12 @@ KanaAutomaton AutomatonCreator::createWHE() {
 
 KanaAutomaton AutomatonCreator::createWHO() {
     auto xo = createXO();
-    auto wh = make_shared<Node>(vector<Edge<Node>>({Edge(U'o', true, xo.getEnd())}));
-    auto w = make_shared<Node>(vector<Edge<Node>>({Edge(U'h', true, wh)}));
+    auto wh = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'o', true, xo.getEnd()),
+        Edge(U'u', false, xo.getBegin())}));
+    auto w = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'h', true, wh),
+        Edge(U'u', false, xo.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, w),
         Edge(U'u', false, xo.getBegin())}));
@@ -954,7 +963,9 @@ KanaAutomaton AutomatonCreator::createKWA() {
     auto k = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, kw),
         Edge(U'u', false, xa.getBegin())}));
-    auto q = make_shared<Node>(vector<Edge<Node>>({Edge(U'a', true, xa.getEnd())}));
+    auto q = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'a', true, xa.getEnd()),
+        Edge(U'u', false, xa.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'k', false, k),
         Edge(U'q', true, q)}));
@@ -967,7 +978,9 @@ KanaAutomaton AutomatonCreator::createKWI() {
     auto k = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, kw),
         Edge(U'u', false, xi.getBegin())}));
-    auto q = make_shared<Node>(vector<Edge<Node>>({Edge(U'i', true, xi.getEnd())}));
+    auto q = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'i', true, xi.getEnd()),
+        Edge(U'u', false, xi.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'k', false, k),
         Edge(U'q', true, q)}));
@@ -980,7 +993,10 @@ KanaAutomaton AutomatonCreator::createKWU() {
     auto k = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, kw),
         Edge(U'u', false, xu.getBegin())}));
-    auto begin = make_shared<Node>(vector<Edge<Node>>({Edge(U'k', true, k)}));
+    auto q = make_shared<Node>(vector<Edge<Node>>({Edge(U'u', false, xu.getBegin())}));
+    auto begin = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'k', true, k),
+        Edge(U'q', false, q)}));
     return KanaAutomaton(begin, xu.getEnd());
 }
 
@@ -990,7 +1006,9 @@ KanaAutomaton AutomatonCreator::createKWE() {
     auto k = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, kw),
         Edge(U'u', false, xe.getBegin())}));
-    auto q = make_shared<Node>(vector<Edge<Node>>({Edge(U'e', true, xe.getEnd())}));
+    auto q = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'e', true, xe.getEnd()),
+        Edge(U'u', false, xe.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'k', false, k),
         Edge(U'q', true, q)}));
@@ -1003,7 +1021,9 @@ KanaAutomaton AutomatonCreator::createKWO() {
     auto k = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'w', true, kw),
         Edge(U'u', false, xo.getBegin())}));
-    auto q = make_shared<Node>(vector<Edge<Node>>({Edge(U'o', true, xo.getEnd())}));
+    auto q = make_shared<Node>(vector<Edge<Node>>({
+        Edge(U'o', true, xo.getEnd()),
+        Edge(U'u', false, xo.getBegin())}));
     auto begin = make_shared<Node>(vector<Edge<Node>>({
         Edge(U'k', false, k),
         Edge(U'q', true, q)}));

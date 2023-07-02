@@ -37,6 +37,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AutomatonCreatorTest.cpp" />
     <ClCompile Include="EdgeTest.cpp" />
     <ClCompile Include="KanaAutomatonTest.cpp" />
     <ClCompile Include="NodeTest.cpp" />

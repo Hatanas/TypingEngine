@@ -61,7 +61,7 @@ public:
     /// <param name="begin">始点</param>
     /// <param name="ends">終点リスト</param>
     KanaAutomaton(std::shared_ptr<Node> begin, std::vector<std::shared_ptr<Node>> ends)
-        : KanaAutomaton(begin, begin, ends) {}
+        : KanaAutomaton(begin, begin, ends, U"") {}
 
     /// <summary>
     /// コンストラクタ
@@ -69,7 +69,7 @@ public:
     /// <param name="begin">始点</param>
     /// <param name="ends">終点</param>
     KanaAutomaton(std::shared_ptr<Node> begin, std::shared_ptr<Node> end)
-        : KanaAutomaton(begin, begin, {end}) {}
+        : KanaAutomaton(begin, begin, {end}, U"") {}
 
     /// <summary>
     /// コンストラクタ

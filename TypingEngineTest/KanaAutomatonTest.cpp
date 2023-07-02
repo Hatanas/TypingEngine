@@ -136,7 +136,8 @@ TEST(KanaAutomatonTest, TransitByPriority) {
     KanaAutomaton automaton(begin, end);
     EXPECT_THAT(
         automaton.transitByPriority(),
-        IsEqualKanaAutomaton(KanaAutomaton(begin, b, {end})));
+        IsEqualKanaAutomaton(KanaAutomaton(begin, end, {end})));
+    EXPECT_EQ(U"bd", automaton.transitByPriority().getAccumulatedInput());
 }
 
 TEST(KanaAutomatonTest, Connect) {
