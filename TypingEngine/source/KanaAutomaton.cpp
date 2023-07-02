@@ -3,35 +3,46 @@
 #include "Edge.h"
 
 #include <algorithm>
+#include <string>
 
 namespace TypingEngine {
 
 using namespace std;
 
-pair<KanaAutomaton, bool> KanaAutomaton::transitByTyping(char32_t typingChar) const {
-    for (const auto& edge : m_now->getEdges()) {
-        if (edge.getTypingChar() == typingChar) {
-            KanaAutomaton automaton(m_begin, edge.getNext(), m_ends);
-            return make_pair(automaton, true);
-        }
+KanaAutomaton KanaAutomaton::transitByInput(std::u32string input) const {
+    KanaAutomaton prev = *this;
+    for (const auto& c : input) {
+        KanaAutomaton next = prev.transitByInput(c);
+        if (prev.m_now == next.m_now) { return prev; }
+        prev = next;
     }
-    return make_pair(*this, false);
+    return prev;
 }
 
-pair<KanaAutomaton, char32_t> KanaAutomaton::transitByPriority() const {
+KanaAutomaton KanaAutomaton::transitByInput(char32_t inputChar) const {
+    for (const auto& edge : m_now->getEdges()) {
+        if (edge.getTypingChar() == inputChar) {
+            u32string acc = m_accumulatedInput + edge.getTypingChar();
+            return KanaAutomaton(m_begin, edge.getNext(), m_ends, acc);
+        }
+    }
+    return *this;
+}
+
+KanaAutomaton KanaAutomaton::transitByPriority() const {
     for (const auto& edge : m_now->getEdges()) {
         if (edge.isPriority()) {
-            KanaAutomaton automaton(m_begin, edge.getNext(), m_ends);
-            return make_pair(automaton, edge.getTypingChar());
+            u32string acc = m_accumulatedInput + edge.getTypingChar();
+            return KanaAutomaton(m_begin, edge.getNext(), m_ends, acc);
         }
     }
     // 遷移先がなかった場合は適当に先頭のNodeに遷移する
     if (m_now->getEdges().size() > 0) {
-        auto edge = m_now->getEdges().front();
-        KanaAutomaton automaton(m_begin, edge.getNext(), m_ends);
-        return make_pair(automaton, edge.getTypingChar());
+        auto& edge = m_now->getEdges().front();
+        u32string acc = m_accumulatedInput + edge.getTypingChar();
+        KanaAutomaton(m_begin, edge.getNext(), m_ends, acc);
     }
-    return make_pair(*this, U'\0');
+    return *this;
 }
 
 KanaAutomaton KanaAutomaton::connect(const KanaAutomaton& first, const KanaAutomaton& second) {

@@ -42,6 +42,15 @@ TEST(KanaAutomatonTest, GetEnds) {
     EXPECT_EQ(ends, automaton.getEnds());
 }
 
+
+TEST(KanaAutomatonTest, GetAccumulatedInput) {
+    auto begin = make_shared<Node>();
+    auto now = make_shared<Node>();
+    auto end = make_shared<Node>();
+    KanaAutomaton automaton(begin, now, {end}, U"input");
+    EXPECT_EQ(U"input", automaton.getAccumulatedInput());
+}
+
 TEST(KanaAutomatonTest, Constructor2Arg) {
     auto begin = make_shared<Node>();
     auto end = make_shared<Node>();
@@ -73,7 +82,17 @@ TEST(KanaAutomatonTest, IsEmptyFalse) {
     EXPECT_FALSE(automaton.isEmpty());
 }
 
-TEST(KanaAutomatonTest, TransitByTyping) {
+TEST(KanaAutomatonTest, IsAccepted) {
+    auto begin = make_shared<Node>();
+    auto end1 = make_shared<Node>();
+    auto end2 = make_shared<Node>();
+    KanaAutomaton a1(begin, end2, {end1, end2});
+    KanaAutomaton a2(begin, begin, {end1});
+    EXPECT_TRUE(a1.isAccepted());
+    EXPECT_FALSE(a2.isAccepted());
+}
+
+TEST(KanaAutomatonTest, TransitByInputString) {
     auto end = make_shared<Node>(vector<Edge<Node>>());
     auto ch = make_shared<Node>(vector<Edge<Node>>({Edge<Node>(U'i', true, end)}));
     auto c = make_shared<Node>(vector<Edge<Node>>({Edge<Node>(U'h', true, ch)}));
@@ -83,11 +102,28 @@ TEST(KanaAutomatonTest, TransitByTyping) {
         Edge<Node>(U'c', false, c)}));
     KanaAutomaton automaton(begin, end);
     EXPECT_THAT(
-        automaton.transitByTyping(U't'),
-        Pair(IsEqualKanaAutomaton(KanaAutomaton(begin, t, {end})), Eq(true)));
+        automaton.transitByInput(U"chi"),
+        IsEqualKanaAutomaton(KanaAutomaton(begin, end, {end})));
     EXPECT_THAT(
-        automaton.transitByTyping(U'a'),
-        Pair(IsEqualKanaAutomaton(automaton), Eq(false)));
+        automaton.transitByInput(U"shi"),
+        IsEqualKanaAutomaton(automaton));
+}
+
+TEST(KanaAutomatonTest, TransitByInputChar) {
+    auto end = make_shared<Node>(vector<Edge<Node>>());
+    auto ch = make_shared<Node>(vector<Edge<Node>>({Edge<Node>(U'i', true, end)}));
+    auto c = make_shared<Node>(vector<Edge<Node>>({Edge<Node>(U'h', true, ch)}));
+    auto t = make_shared<Node>(vector<Edge<Node>>({Edge<Node>(U'i', true, end)}));
+    auto begin = make_shared<Node>(vector<Edge<Node>>({
+        Edge<Node>(U't', true, t),
+        Edge<Node>(U'c', false, c)}));
+    KanaAutomaton automaton(begin, end);
+    EXPECT_THAT(
+        automaton.transitByInput(U't'),
+        IsEqualKanaAutomaton(KanaAutomaton(begin, t, {end})));
+    EXPECT_THAT(
+        automaton.transitByInput(U'a'),
+        IsEqualKanaAutomaton(automaton));
 }
 
 TEST(KanaAutomatonTest, TransitByPriority) {
@@ -100,7 +136,7 @@ TEST(KanaAutomatonTest, TransitByPriority) {
     KanaAutomaton automaton(begin, end);
     EXPECT_THAT(
         automaton.transitByPriority(),
-        Pair(IsEqualKanaAutomaton(KanaAutomaton(begin, b, {end})), Eq(U'b')));
+        IsEqualKanaAutomaton(KanaAutomaton(begin, b, {end})));
 }
 
 TEST(KanaAutomatonTest, Connect) {
@@ -115,15 +151,15 @@ TEST(KanaAutomatonTest, Connect) {
     EXPECT_EQ(begin1, connect.getBegin());
     EXPECT_EQ(end2, connect.getEnd());
     EXPECT_THAT(
-        connect.transitByTyping(U'n').first.transitByTyping(U'n').first.transitByTyping(U'k'),
-        Pair(IsEqualKanaAutomaton(KanaAutomaton(begin1, end2, {end2})), Eq(true)));
+        connect.transitByInput(U"nnk"),
+        IsEqualKanaAutomaton(KanaAutomaton(begin1, end2, {end2})));
     EXPECT_THAT(
-        connect.transitByTyping(U'n').first.transitByTyping(U'k'),
-        Pair(IsEqualKanaAutomaton(KanaAutomaton(begin1, end2, {end2})), Eq(true)));
+        connect.transitByInput(U"nk"),
+        IsEqualKanaAutomaton(KanaAutomaton(begin1, end2, {end2})));
 }
 
 TEST(KanaAutomatonTest, Empty) {
     auto a = KanaAutomaton::empty();
-    EXPECT_TRUE(a.empty());
+    EXPECT_TRUE(a.isEmpty());
 }
 }

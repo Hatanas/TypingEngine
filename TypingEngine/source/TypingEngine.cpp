@@ -16,9 +16,9 @@ TypingEngine TypingEngine::create(const u32string& word) {
 }
 
 optional<TypingEngine> TypingEngine::type(char32_t typingChar) const {
-    auto transit = m_automaton.transitByTyping(typingChar);
-    if (!transit.second) { return nullopt; }
-    return TypingEngine(transit.first, m_accumulatedInputChar + typingChar);
+    auto transit = m_automaton.transitByInput(typingChar);
+    if (m_automaton.getNow() == transit.getNow()) { return nullopt; }
+    return TypingEngine(transit, m_accumulatedInputChar + typingChar);
 }
 
 u32string TypingEngine::romanized() const {
@@ -35,13 +35,11 @@ bool TypingEngine::isFinished() const {
 
 u32string TypingEngine::generateRomanizedString(std::shared_ptr<Node> start) const {
     KanaAutomaton automaton(m_automaton.getBegin(), start, m_automaton.getEnds());
-    u32string roman = U"";
-    while (true) {
-        auto [a, c] = automaton.transitByPriority();
-        if (c == '\0') { break; }
-        roman += c;
+    while (!automaton.isAccepted()) {
+        auto a = automaton.transitByPriority();
+        if (automaton.getAccumulatedInput() == a.getAccumulatedInput()) { break; }
         automaton = a;
     }
-    return roman;
+    return automaton.getAccumulatedInput();
 }
 }

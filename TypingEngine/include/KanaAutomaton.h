@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 #include "Node.h"
 
@@ -28,6 +29,11 @@ private:
     /// </summary>
     std::vector<std::shared_ptr<Node>> m_ends;
 
+    /// <summary>
+    /// これまでに入力された文字列
+    /// </summary>
+    std::u32string m_accumulatedInput;
+
 public:
     /// <summary>
     /// コンストラクタ
@@ -35,8 +41,19 @@ public:
     /// <param name="begin">始点</param>
     /// <param name="now">現在地点</param>
     /// <param name="ends">終点リスト</param>
+    /// <param name="inputted">入力された文字</param>
+    KanaAutomaton(std::shared_ptr<Node> begin, std::shared_ptr<Node> now, std::vector<std::shared_ptr<Node>> ends, std::u32string accumulatedInput)
+        : m_begin(begin), m_now(now), m_ends(ends), m_accumulatedInput(accumulatedInput) {
+    }
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="begin">始点</param>
+    /// <param name="now">現在地点</param>
+    /// <param name="ends">終点リスト</param>
     KanaAutomaton(std::shared_ptr<Node> begin, std::shared_ptr<Node> now, std::vector<std::shared_ptr<Node>> ends)
-        : m_begin(begin), m_now(now), m_ends(ends) {}
+        : KanaAutomaton(begin, now, ends, U"") { }
 
     /// <summary>
     /// コンストラクタ
@@ -94,6 +111,12 @@ public:
     inline std::vector<std::shared_ptr<Node>> getEnds() const { return m_ends; }
 
     /// <summary>
+    /// これまでに入力された文字列を取得
+    /// </summary>
+    /// <returns>入力された文字列</returns>
+    inline std::u32string getAccumulatedInput() const { return m_accumulatedInput; }
+
+    /// <summary>
     /// 空のオートマトンかを判定
     /// </summary>
     /// <remarks>始点と終点が同じノードかどうかで判定する。</remarks>
@@ -101,17 +124,30 @@ public:
     inline bool isEmpty() const { return m_ends.size() == 1 && m_begin == m_ends[0]; }
 
     /// <summary>
+    /// オートマトンが受理状態であるかを判定
+    /// </summary>
+    /// <returns>受理状態か</returns>
+    inline bool isAccepted() const { return std::find(m_ends.begin(), m_ends.end(), m_now) != m_ends.end(); }
+
+    /// <summary>
     /// 文字入力による遷移
     /// </summary>
-    /// <param name="typingChar">入力した文字</param>
-    /// <returns>遷移後のオートマトンと遷移できたかのフラグ</returns>
-    std::pair<KanaAutomaton, bool> transitByTyping(char32_t typingChar) const;
+    /// <param name="input">入力した文字</param>
+    /// <returns>遷移後のオートマトン</returns>
+    KanaAutomaton transitByInput(std::u32string input) const;
+
+    /// <summary>
+    /// 文字列入力による遷移
+    /// </summary>
+    /// <param name="inputChar">入力した文字列</param>
+    /// <returns>遷移後のオートマトン</returns>
+    KanaAutomaton transitByInput(char32_t inputChar) const;
 
     /// <summary>
     /// Edgeに設定された優先度による遷移
     /// </summary>
     /// <returns>遷移後のオートマトンと遷移する文字</returns>
-    std::pair<KanaAutomaton, char32_t> transitByPriority() const;
+    KanaAutomaton transitByPriority() const;
 
 public:
     /// <summary>
