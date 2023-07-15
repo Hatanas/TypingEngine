@@ -31,6 +31,7 @@ private:
     static KanaAutomaton createU();
     static KanaAutomaton createE();
     static KanaAutomaton createO();
+    static KanaAutomaton createYE();
     static KanaAutomaton createWHA();
     static KanaAutomaton createWHI();
     static KanaAutomaton createWHE();
@@ -50,6 +51,9 @@ private:
     static KanaAutomaton createKWU();
     static KanaAutomaton createKWE();
     static KanaAutomaton createKWO();
+    static KanaAutomaton createQYA();
+    static KanaAutomaton createQYU();
+    static KanaAutomaton createQYO();
     static KanaAutomaton createSA();
     static KanaAutomaton createSI();
     static KanaAutomaton createSU();

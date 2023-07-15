@@ -18,7 +18,9 @@ TEST(AutomatonCreatorTest, CreateA) {
 TEST(AutomatonCreatorTest, CreateI) {
     auto automaton = AutomatonCreator::create(U"い");
     EXPECT_TRUE(automaton.transitByInput(U"i").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"yi").isAccepted());
     EXPECT_EQ(U"i", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"yi", automaton.transitByInput(U"y").transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateU) {
@@ -27,6 +29,8 @@ TEST(AutomatonCreatorTest, CreateU) {
     EXPECT_TRUE(automaton.transitByInput(U"wu").isAccepted());
     EXPECT_TRUE(automaton.transitByInput(U"whu").isAccepted());
     EXPECT_EQ(U"u", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wu", automaton.transitByInput(U"w").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whu", automaton.transitByInput(U"wh").transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateE) {
@@ -41,17 +45,131 @@ TEST(AutomatonCreatorTest, CreateO) {
     EXPECT_EQ(U"o", automaton.transitByPriority().getAccumulatedInput());
 }
 
+TEST(AutomatonCreatorTest, CreateYE) {
+    auto automaton = AutomatonCreator::create(U"いぇ");
+    EXPECT_TRUE(automaton.transitByInput(U"ye").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"yixe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"yile").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"ixe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"ile").isAccepted());
+    EXPECT_EQ(U"ye", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ye", automaton.transitByInput(U"y").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"yixe", automaton.transitByInput(U"yi").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"yixe", automaton.transitByInput(U"yix").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"yile", automaton.transitByInput(U"yil").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ixe", automaton.transitByInput(U"i").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ixe", automaton.transitByInput(U"ix").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ile", automaton.transitByInput(U"il").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateWHA) {
+    auto automaton = AutomatonCreator::create(U"うぁ");
+    EXPECT_TRUE(automaton.transitByInput(U"wha").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wuxa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wula").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whuxa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whula").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"uxa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"ula").isAccepted());
+    EXPECT_EQ(U"wha", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wha", automaton.transitByInput(U"w").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wha", automaton.transitByInput(U"wh").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxa", automaton.transitByInput(U"whu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxa", automaton.transitByInput(U"whux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whula", automaton.transitByInput(U"whul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxa", automaton.transitByInput(U"wu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxa", automaton.transitByInput(U"wux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wula", automaton.transitByInput(U"wul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxa", automaton.transitByInput(U"u").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxa", automaton.transitByInput(U"ux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ula", automaton.transitByInput(U"ul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateWHI) {
+    auto automaton = AutomatonCreator::create(U"うぃ");
+    EXPECT_TRUE(automaton.transitByInput(U"wi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wuxi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wuli").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whuxi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whuli").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"uxi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"uli").isAccepted());
+    EXPECT_EQ(U"wi", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wi", automaton.transitByInput(U"w").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whi", automaton.transitByInput(U"wh").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxi", automaton.transitByInput(U"whu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxi", automaton.transitByInput(U"whux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuli", automaton.transitByInput(U"whul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxi", automaton.transitByInput(U"wu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxi", automaton.transitByInput(U"wux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuli", automaton.transitByInput(U"wul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxi", automaton.transitByInput(U"u").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxi", automaton.transitByInput(U"ux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uli", automaton.transitByInput(U"ul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateWHE) {
+    auto automaton = AutomatonCreator::create(U"うぇ");
+    EXPECT_TRUE(automaton.transitByInput(U"we").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wuxe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wule").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whuxe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whule").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"uxe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"ule").isAccepted());
+    EXPECT_EQ(U"we", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"we", automaton.transitByInput(U"w").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whe", automaton.transitByInput(U"wh").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxe", automaton.transitByInput(U"whu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxe", automaton.transitByInput(U"whux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whule", automaton.transitByInput(U"whul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxe", automaton.transitByInput(U"wu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxe", automaton.transitByInput(U"wux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wule", automaton.transitByInput(U"wul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxe", automaton.transitByInput(U"u").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxe", automaton.transitByInput(U"ux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ule", automaton.transitByInput(U"ul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateWHO) {
+    auto automaton = AutomatonCreator::create(U"うぉ");
+    EXPECT_TRUE(automaton.transitByInput(U"who").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wuxo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"wulo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whuxo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"whulo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"uxo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"ulo").isAccepted());
+    EXPECT_EQ(U"who", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"who", automaton.transitByInput(U"w").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"who", automaton.transitByInput(U"wh").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxo", automaton.transitByInput(U"whu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whuxo", automaton.transitByInput(U"whux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"whulo", automaton.transitByInput(U"whul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxo", automaton.transitByInput(U"wu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wuxo", automaton.transitByInput(U"wux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"wulo", automaton.transitByInput(U"wul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxo", automaton.transitByInput(U"u").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"uxo", automaton.transitByInput(U"ux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ulo", automaton.transitByInput(U"ul").transitByPriority().getAccumulatedInput());
+}
+
 TEST(AutomatonCreatorTest, CreateKA) {
     auto automaton = AutomatonCreator::create(U"か");
     EXPECT_TRUE(automaton.transitByInput(U"ka").isAccepted());
     EXPECT_TRUE(automaton.transitByInput(U"ca").isAccepted());
     EXPECT_EQ(U"ka", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ka", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ca", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateKI) {
     auto automaton = AutomatonCreator::create(U"き");
     EXPECT_TRUE(automaton.transitByInput(U"ki").isAccepted());
     EXPECT_EQ(U"ki", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ki", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateKU) {
@@ -60,12 +178,16 @@ TEST(AutomatonCreatorTest, CreateKU) {
     EXPECT_TRUE(automaton.transitByInput(U"cu").isAccepted());
     EXPECT_TRUE(automaton.transitByInput(U"qu").isAccepted());
     EXPECT_EQ(U"ku", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ku", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cu", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qu", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateKE) {
     auto automaton = AutomatonCreator::create(U"け");
     EXPECT_TRUE(automaton.transitByInput(U"ke").isAccepted());
     EXPECT_EQ(U"ke", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ke", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateKO) {
@@ -73,6 +195,291 @@ TEST(AutomatonCreatorTest, CreateKO) {
     EXPECT_TRUE(automaton.transitByInput(U"ko").isAccepted());
     EXPECT_TRUE(automaton.transitByInput(U"co").isAccepted());
     EXPECT_EQ(U"ko", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"ko", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"co", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKYA) {
+    auto automaton = AutomatonCreator::create(U"きゃ");
+    EXPECT_TRUE(automaton.transitByInput(U"kya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kixya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kilya").isAccepted());
+    EXPECT_EQ(U"kya", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kya", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kya", automaton.transitByInput(U"ky").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixya", automaton.transitByInput(U"ki").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixya", automaton.transitByInput(U"kix").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kilya", automaton.transitByInput(U"kil").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKYI) {
+    auto automaton = AutomatonCreator::create(U"きぃ");
+    EXPECT_TRUE(automaton.transitByInput(U"kyi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kixi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kili").isAccepted());
+    EXPECT_EQ(U"kyi", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kyi", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kyi", automaton.transitByInput(U"ky").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixi", automaton.transitByInput(U"ki").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixi", automaton.transitByInput(U"kix").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kili", automaton.transitByInput(U"kil").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKYU) {
+    auto automaton = AutomatonCreator::create(U"きゅ");
+    EXPECT_TRUE(automaton.transitByInput(U"kyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kixyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kilyu").isAccepted());
+    EXPECT_EQ(U"kyu", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kyu", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kyu", automaton.transitByInput(U"ky").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixyu", automaton.transitByInput(U"ki").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixyu", automaton.transitByInput(U"kix").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kilyu", automaton.transitByInput(U"kil").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKYE) {
+    auto automaton = AutomatonCreator::create(U"きぇ");
+    EXPECT_TRUE(automaton.transitByInput(U"kye").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kixe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kile").isAccepted());
+    EXPECT_EQ(U"kye", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kye", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kye", automaton.transitByInput(U"ky").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixe", automaton.transitByInput(U"ki").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixe", automaton.transitByInput(U"kix").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kile", automaton.transitByInput(U"kil").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKYO) {
+    auto automaton = AutomatonCreator::create(U"きょ");
+    EXPECT_TRUE(automaton.transitByInput(U"kyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kixyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kilyo").isAccepted());
+    EXPECT_EQ(U"kyo", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kyo", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kyo", automaton.transitByInput(U"ky").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixyo", automaton.transitByInput(U"ki").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kixyo", automaton.transitByInput(U"kix").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kilyo", automaton.transitByInput(U"kil").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKWA) {
+    auto automaton = AutomatonCreator::create(U"くぁ");
+    EXPECT_TRUE(automaton.transitByInput(U"qa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qwa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qula").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kwa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kula").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxa").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cula").isAccepted());
+    EXPECT_EQ(U"qa", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qa", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qwa", automaton.transitByInput(U"qw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxa", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxa", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qula", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwa", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwa", automaton.transitByInput(U"kw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxa", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxa", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kula", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxa", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxa", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxa", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cula", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKWI) {
+    auto automaton = AutomatonCreator::create(U"くぃ");
+    EXPECT_TRUE(automaton.transitByInput(U"qi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qwi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qyi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quli").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kwi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuli").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxi").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"culi").isAccepted());
+    EXPECT_EQ(U"qi", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qi", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qwi", automaton.transitByInput(U"qw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qyi", automaton.transitByInput(U"qy").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxi", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxi", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quli", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwi", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwi", automaton.transitByInput(U"kw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxi", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxi", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuli", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxi", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxi", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxi", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"culi", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKWU) {
+    auto automaton = AutomatonCreator::create(U"くぅ");
+    EXPECT_TRUE(automaton.transitByInput(U"kwu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kulu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qwu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qulu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"culu").isAccepted());
+    EXPECT_EQ(U"kwu", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwu", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwu", automaton.transitByInput(U"kw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxu", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxu", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kulu", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qwu", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qwu", automaton.transitByInput(U"qw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxu", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxu", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qulu", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxu", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxu", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxu", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"culu", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKWE) {
+    auto automaton = AutomatonCreator::create(U"くぇ");
+    EXPECT_TRUE(automaton.transitByInput(U"qe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qwe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qye").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qule").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kwe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kule").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxe").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cule").isAccepted());
+    EXPECT_EQ(U"qe", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qe", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qwe", automaton.transitByInput(U"qw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qye", automaton.transitByInput(U"qy").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxe", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxe", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qule", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwe", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwe", automaton.transitByInput(U"kw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxe", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxe", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kule", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxe", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxe", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxe", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cule", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateKWO) {
+    auto automaton = AutomatonCreator::create(U"くぉ");
+    EXPECT_TRUE(automaton.transitByInput(U"qo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qwo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qulo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kwo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kulo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"culo").isAccepted());
+    EXPECT_EQ(U"qo", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qo", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qwo", automaton.transitByInput(U"qw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxo", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxo", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qulo", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwo", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kwo", automaton.transitByInput(U"kw").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxo", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxo", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kulo", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxo", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxo", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxo", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"culo", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateQYA) {
+    auto automaton = AutomatonCreator::create(U"くゃ");
+    EXPECT_TRUE(automaton.transitByInput(U"qya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qulya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kulya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxya").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"culya").isAccepted());
+    EXPECT_EQ(U"qya", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qya", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qya", automaton.transitByInput(U"qy").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxya", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxya", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qulya", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxya", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxya", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxya", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kulya", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxya", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxya", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxya", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"culya", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateQYU) {
+    auto automaton = AutomatonCreator::create(U"くゅ");
+    EXPECT_TRUE(automaton.transitByInput(U"qyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qulyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kulyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxyu").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"culyu").isAccepted());
+    EXPECT_EQ(U"qyu", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qyu", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qyu", automaton.transitByInput(U"qy").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxyu", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxyu", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qulyu", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxyu", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxyu", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxyu", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kulyu", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxyu", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxyu", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxyu", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"culyu", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
+}
+
+TEST(AutomatonCreatorTest, CreateQYO) {
+    auto automaton = AutomatonCreator::create(U"くょ");
+    EXPECT_TRUE(automaton.transitByInput(U"qyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"quxyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"qulyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kuxyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"kulyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"cuxyo").isAccepted());
+    EXPECT_TRUE(automaton.transitByInput(U"culyo").isAccepted());
+    EXPECT_EQ(U"qyo", automaton.transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qyo", automaton.transitByInput(U"q").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qyo", automaton.transitByInput(U"qy").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxyo", automaton.transitByInput(U"qu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"quxyo", automaton.transitByInput(U"qux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"qulyo", automaton.transitByInput(U"qul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxyo", automaton.transitByInput(U"k").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxyo", automaton.transitByInput(U"ku").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kuxyo", automaton.transitByInput(U"kux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"kulyo", automaton.transitByInput(U"kul").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxyo", automaton.transitByInput(U"c").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxyo", automaton.transitByInput(U"cu").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"cuxyo", automaton.transitByInput(U"cux").transitByPriority().getAccumulatedInput());
+    EXPECT_EQ(U"culyo", automaton.transitByInput(U"cul").transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateSA) {
@@ -505,150 +912,6 @@ TEST(AutomatonCreatorTest, CreateXTU) {
     EXPECT_TRUE(automaton.transitByInput(U"xtsu").isAccepted());
     EXPECT_TRUE(automaton.transitByInput(U"ltsu").isAccepted());
     EXPECT_EQ(U"xtu", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateWHA) {
-    auto automaton = AutomatonCreator::create(U"うぁ");
-    EXPECT_TRUE(automaton.transitByInput(U"wha").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"uxa").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"ula").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wuxa").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wula").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whuxa").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whula").isAccepted());
-    EXPECT_EQ(U"wha", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateWHI) {
-    auto automaton = AutomatonCreator::create(U"うぃ");
-    EXPECT_TRUE(automaton.transitByInput(U"wi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"uxi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"uli").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wuxi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wuli").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whuxi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whuli").isAccepted());
-    EXPECT_EQ(U"wi", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateWHE) {
-    auto automaton = AutomatonCreator::create(U"うぇ");
-    EXPECT_TRUE(automaton.transitByInput(U"we").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"uxe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"ule").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wuxe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wule").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whuxe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whule").isAccepted());
-    EXPECT_EQ(U"we", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateWHO) {
-    auto automaton = AutomatonCreator::create(U"うぉ");
-    EXPECT_TRUE(automaton.transitByInput(U"who").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"uxo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"ulo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wuxo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"wulo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whuxo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"whulo").isAccepted());
-    EXPECT_EQ(U"who", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKYA) {
-    auto automaton = AutomatonCreator::create(U"きゃ");
-    EXPECT_TRUE(automaton.transitByInput(U"kya").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kixya").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kilya").isAccepted());
-    EXPECT_EQ(U"kya", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKYI) {
-    auto automaton = AutomatonCreator::create(U"きぃ");
-    EXPECT_TRUE(automaton.transitByInput(U"kyi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kixi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kili").isAccepted());
-    EXPECT_EQ(U"kyi", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKYU) {
-    auto automaton = AutomatonCreator::create(U"きゅ");
-    EXPECT_TRUE(automaton.transitByInput(U"kyu").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kixyu").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kilyu").isAccepted());
-    EXPECT_EQ(U"kyu", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKYE) {
-    auto automaton = AutomatonCreator::create(U"きぇ");
-    EXPECT_TRUE(automaton.transitByInput(U"kye").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kixe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kile").isAccepted());
-    EXPECT_EQ(U"kye", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKYO) {
-    auto automaton = AutomatonCreator::create(U"きょ");
-    EXPECT_TRUE(automaton.transitByInput(U"kyo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kixyo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kilyo").isAccepted());
-    EXPECT_EQ(U"kyo", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKWA) {
-    auto automaton = AutomatonCreator::create(U"くぁ");
-    EXPECT_TRUE(automaton.transitByInput(U"qa").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kwa").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kuxa").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kula").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"quxa").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"qula").isAccepted());
-    EXPECT_EQ(U"qa", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKWI) {
-    auto automaton = AutomatonCreator::create(U"くぃ");
-    EXPECT_TRUE(automaton.transitByInput(U"qi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kwi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kuxi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kuli").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"quxi").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"quli").isAccepted());
-    EXPECT_EQ(U"qi", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKWU) {
-    auto automaton = AutomatonCreator::create(U"くぅ");
-    EXPECT_TRUE(automaton.transitByInput(U"kwu").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kuxu").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kulu").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"quxu").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"qulu").isAccepted());
-    EXPECT_EQ(U"kwu", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKWE) {
-    auto automaton = AutomatonCreator::create(U"くぇ");
-    EXPECT_TRUE(automaton.transitByInput(U"qe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kwe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kuxe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kule").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"quxe").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"qule").isAccepted());
-    EXPECT_EQ(U"qe", automaton.transitByPriority().getAccumulatedInput());
-}
-
-TEST(AutomatonCreatorTest, CreateKWO) {
-    auto automaton = AutomatonCreator::create(U"くぉ");
-    EXPECT_TRUE(automaton.transitByInput(U"qo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kwo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kuxo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"kulo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"quxo").isAccepted());
-    EXPECT_TRUE(automaton.transitByInput(U"qulo").isAccepted());
-    EXPECT_EQ(U"qo", automaton.transitByPriority().getAccumulatedInput());
 }
 
 TEST(AutomatonCreatorTest, CreateGYA) {
